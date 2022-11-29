@@ -13,10 +13,7 @@ from pymongo import ASCENDING, MongoClient
 app = Flask(__name__)
 # app.config.update(dict(SECRET_KEY=str(environ["DATABASE_PASS"])))
 client = MongoClient(str(environ["DATABASE"]))
-try:
-    print(client.server_info())
-except Exception:
-    print("Unable to connect to the server.")
+
 db = client.TaskManager
 
 Headers = {
@@ -50,6 +47,10 @@ def clear_queue():
 @app.route("/", methods=["POST"])
 def post():
     # Expects Task_ID and post_body
+    try:
+        print(client.server_info())
+    except Exception:
+        print("Unable to connect to the server.")
     if not request.json.get("task_id"):
         return "Record not found", 400
     if not str(request.json.get("task_id")).isnumeric():
