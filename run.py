@@ -48,7 +48,7 @@ def clear_queue():
 def post():
     # Expects Task_ID and post_body
     try:
-        print(client.server_info())
+        return client.server_info()
     except Exception:
         print("Unable to connect to the server.")
     if not request.json.get("task_id"):
