@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from io import BytesIO
 from os import environ
 from zipfile import ZipFile
+from flask_cors import CORS
 
 import requests
 from flask import Flask, Response, request
@@ -11,6 +12,8 @@ from pymongo import ASCENDING, MongoClient
 
 # config system
 app = Flask(__name__)
+CORS(app, support_credentials=True)
+
 # app.config.update(dict(SECRET_KEY=str(environ["DATABASE_PASS"])))
 client = MongoClient(str(environ["DATABASE"]), username=environ["DATABASE_USER"], password=environ["DATABASE_PASS"])
 
