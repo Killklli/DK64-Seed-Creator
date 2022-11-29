@@ -12,7 +12,7 @@ from pymongo import ASCENDING, MongoClient
 # config system
 app = Flask(__name__)
 # app.config.update(dict(SECRET_KEY=str(environ["DATABASE_PASS"])))
-client = MongoClient(str(environ["DATABASE"]), username=environ["DATABASE_USER"], password=environ["DATABASE_PASS"], authSource=environ["DATABASE_DB"])
+client = MongoClient(str(environ["DATABASE"]), username=environ["DATABASE_USER"], password=environ["DATABASE_PASS"])
 
 db = client.TaskManager
 
