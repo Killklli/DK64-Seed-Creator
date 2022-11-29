@@ -12,8 +12,11 @@ from pymongo import ASCENDING, MongoClient
 # config system
 app = Flask(__name__)
 # app.config.update(dict(SECRET_KEY=str(environ["DATABASE_PASS"])))
-client = MongoClient(str(environ["DATABASE_URL"]))
-
+client = MongoClient(str(environ["DATABASE"]))
+try:
+    print(client.server_info())
+except Exception:
+    print("Unable to connect to the server.")
 db = client.TaskManager
 
 Headers = {
