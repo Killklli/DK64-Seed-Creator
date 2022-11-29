@@ -14,7 +14,7 @@ app = Flask(__name__)
 # app.config.update(dict(SECRET_KEY=str(environ["DATABASE_PASS"])))
 client = MongoClient(str(environ["DATABASE"]), username=environ["DATABASE_USER"], password=environ["DATABASE_PASS"])
 
-db = client.GetDatabase(environ["DATABASE_DB"]);
+db = client[environ["DATABASE_DB"]]
 
 Headers = {
     "Accept": "application/vnd.github.everest-preview+json",
