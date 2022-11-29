@@ -1,0 +1,39 @@
+name: Seed Generation
+
+on:
+  repository_dispatch:
+    types: generate_seed-*
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      ID: ${{ github.event.client_payload.id }}
+      POST_BODY: ${{ github.event.client_payload.post_body }}
+    steps:
+    - uses: actions/checkout@v3
+      if: github.event.client_payload.branch == 'dev'
+      with:
+        repository: 2dos/DK64-Randomizer-Dev
+
+    - uses: actions/checkout@v3
+      if: github.event.client_payload.branch != 'dev'
+      with:
+        repository: DK64-Randomizer-Release
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+
+    - name: run build
+      run: python3 cli.py --output out.lanky
+  
+    - uses: actions/upload-artifact@v3
+      with:
+        name: $ID
+        path: out.lanky
