@@ -52,9 +52,7 @@ def post():
     # Expects Task_ID and post_body
     if not request.json.get("task_id"):
         return "Record not found", 400
-    if not str(request.json.get("task_id")).isnumeric():
-        return "Record not found", 400
-    id = int(request.json.get("task_id"))
+    id = request.json.get("task_id")
     clear_queue()
     if db.tasks.count_documents({"status": "in_progress"}) >= 5:
         if not db.tasks.find_one({"task_id": id}):
@@ -95,9 +93,7 @@ def get():
     # Expects task_id
     if not request.args.get("task_id"):
         return "Record not found", 400
-    if not str(request.args.get("task_id")).isnumeric():
-        return "Record not found", 400
-    id = int(request.args.get("task_id"))
+    id = request.args.get("task_id")
     clear_queue()
     if not db.tasks.find_one({"task_id": id}):
         return "You must send a request to start a job first", 400
