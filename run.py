@@ -128,7 +128,7 @@ def get():
             else:
                 db.tasks.update_one({"task_id": id}, {"$set": {"last_checked": int(datetime.now().timestamp())}})
 
-        return "Pending", 400
+        return "Pending", 425
 
 
 if __name__ == "__main__":
