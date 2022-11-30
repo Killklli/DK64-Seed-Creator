@@ -47,7 +47,7 @@ def clear_queue():
             db.tasks.delete_one(element)
 
 
-@app.route("/", methods=["POST"])
+@app.route("/generate", methods=["POST"])
 def post():
     # Expects Task_ID and post_body
     if not request.json.get("task_id"):
@@ -88,7 +88,7 @@ def post():
     return "Invalid Request", 405
 
 
-@app.route("/", methods=["GET"])
+@app.route("/generate", methods=["GET"])
 def get():
     # Expects task_id
     if not request.args.get("task_id"):
