@@ -115,7 +115,7 @@ def get():
                 response_body = json.loads(response.text)
                 if response_body.get("total_count", 0) == 0:
                     db.tasks.delete_many({"task_id": id})
-                    requests.delete(run.get("url"), headers=Headers)
+                    # requests.delete(run.get("url"), headers=Headers)
                     return "Something Went Wrong", 400
                 else:
                     response = requests.get(response_body.get("artifacts")[0].get("archive_download_url"), headers=Headers)
