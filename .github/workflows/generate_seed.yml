@@ -15,25 +15,36 @@ jobs:
       ID: ${{ github.event.client_payload.id }}
       POST_BODY: ${{ github.event.client_payload.post_body }}
     steps:
-    - uses: actions/checkout@v3
-      if: github.event.client_payload.branch == 'dev'
-      with:
-        repository: 2dos/DK64-Randomizer-Dev
+      - uses: actions/checkout@v3
+        if: github.event.client_payload.branch == 'dev'
+        with:
+          repository: 2dos/DK64-Randomizer-Dev
 
-    - uses: actions/checkout@v3
-      if: github.event.client_payload.branch != 'dev'
-      with:
-        repository: DK64-Randomizer-Release
+      - name: Print JSON
+        if: github.event.client_payload.branch == 'dev'
+        run: echo $POST_BODY
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.11"
+      - uses: actions/checkout@v3
+        if: github.event.client_payload.branch != 'dev'
+        with:
+          repository: 2dos/DK64-Randomizer-Release
 
-    - name: run build
-      run: python3 cli.py --output out.lanky
-  
-    - uses: actions/upload-artifact@v3
-      with:
-        name: $ID
-        path: out.lanky
+      - name: run build
+        run: python3 cli.py --output out.lanky 2>log.txt
+    
+      - name: Get Log
+        if: ${{ failure() }}
+        id: gen_seed
+        run: echo ::set-output name=gen_seed::$(cat log.txt)
+      
+      - uses: sarisia/actions-status-discord@v1
+        if: ${{ failure() }}
+        with:
+          nocontext: True
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          description: ${{steps.gen_seed.outputs.gen_seed}}
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: $ID
+          path: out.lanky
