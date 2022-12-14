@@ -36,6 +36,7 @@ jobs:
         if: ${{ failure() }}
         id: gen_seed
         run: echo ::set-output name=gen_seed::$(cat log.txt)
+      - run: cat log.txt >> $GITHUB_STEP_SUMMARY
       
       - uses: sarisia/actions-status-discord@v1
         if: ${{ failure() }}
