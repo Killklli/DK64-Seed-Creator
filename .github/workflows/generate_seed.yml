@@ -30,22 +30,8 @@ jobs:
           repository: 2dos/DK64-Randomizer-Release
 
       - name: run build
-        run: python3 cli.py --output out.lanky 2>log.txt
+        run: python3 cli.py --output out.lanky
     
-      - name: Get Log
-        if: ${{ failure() }}
-        id: gen_seed
-        run: echo ::set-output name=gen_seed::$(cat log.txt)
-      - if: ${{ failure() }}
-        run: cat log.txt >> $GITHUB_STEP_SUMMARY
-      
-      - uses: sarisia/actions-status-discord@v1
-        if: ${{ failure() }}
-        with:
-          nocontext: True
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          description: ${{steps.gen_seed.outputs.gen_seed}}
-
       - uses: actions/upload-artifact@v3
         with:
           name: artifact
