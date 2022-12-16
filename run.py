@@ -125,7 +125,7 @@ def get():
                             for zipinfo in thezip.infolist():
                                 thefile = thezip.open(zipinfo)
                                 db.tasks.delete_many({"task_id": id})
-                                return Response(thefile, mimetype="text/plain", direct_passthrough=True, status=400)
+                                return thefile.read(), 400
                     else:
                         response = requests.get(response_body.get("artifacts")[0]["archive_download_url"], headers=Headers)
                         requests.delete(run.get("url"), headers=Headers)

@@ -14,6 +14,8 @@ jobs:
     env:
       ID: ${{ github.event.client_payload.id }}
       POST_BODY: ${{ github.event.client_payload.post_body }}
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+
     steps:
       - uses: actions/checkout@v3
         if: github.event.client_payload.branch == 'dev'
