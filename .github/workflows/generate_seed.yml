@@ -31,8 +31,14 @@ jobs:
 
       - name: run build
         run: python3 cli.py --output out.lanky
-    
+  
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: log
+          path: error.log
+
       - uses: actions/upload-artifact@v3
         with:
-          name: artifact
+          name: lanky
           path: out.lanky
