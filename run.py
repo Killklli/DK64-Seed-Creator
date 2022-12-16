@@ -118,13 +118,21 @@ def get():
                     # requests.delete(run.get("url"), headers=Headers)
                     return "Something Went Wrong", 400
                 else:
-                    response = requests.get(response_body.get("artifacts")[0].get("archive_download_url"), headers=Headers)
-                    # requests.delete(run.get("url"), headers=Headers)
-                    with ZipFile(BytesIO(response.content)) as thezip:
-                        for zipinfo in thezip.infolist():
-                            thefile = thezip.open(zipinfo)
-                            db.tasks.delete_many({"task_id": id})
-                            return Response(thefile, mimetype="text/plain", direct_passthrough=True)
+                    response = requests.get(response_body.get("artifacts")[0], headers=Headers)
+                    if json.loads(response.text)["name"] == "log":
+                        requests.delete(run.get("url"), headers=Headers)
+                        with ZipFile(BytesIO(response.content)) as thezip:
+                            for zipinfo in thezip.infolist():
+                                thefile = thezip.open(zipinfo)
+                                db.tasks.delete_many({"task_id": id})
+                                return Response(thefile, mimetype="text/plain", direct_passthrough=True, status=400)
+                    else:
+                        requests.delete(run.get("url"), headers=Headers)
+                        with ZipFile(BytesIO(response.content["archive_download_url"])) as thezip:
+                            for zipinfo in thezip.infolist():
+                                thefile = thezip.open(zipinfo)
+                                db.tasks.delete_many({"task_id": id})
+                                return Response(thefile, mimetype="text/plain", direct_passthrough=True)
             else:
                 db.tasks.update_one({"task_id": id}, {"$set": {"last_checked": int(datetime.now().timestamp())}})
 

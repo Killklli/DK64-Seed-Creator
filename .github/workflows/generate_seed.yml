@@ -29,6 +29,8 @@ jobs:
         with:
           repository: 2dos/DK64-Randomizer-Release
 
+      - run: pip install -r requirements-dev.txt
+
       - name: run build
         run: python3 cli.py --output out.lanky
   
