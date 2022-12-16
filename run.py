@@ -119,7 +119,7 @@ def get():
                     return "Something Went Wrong", 400
                 else:
                     response = requests.get(response_body.get("artifacts")[0].get("archive_download_url"), headers=Headers)
-                    requests.delete(run.get("url"), headers=Headers)
+                    # requests.delete(run.get("url"), headers=Headers)
                     with ZipFile(BytesIO(response.content)) as thezip:
                         for zipinfo in thezip.infolist():
                             thefile = thezip.open(zipinfo)
