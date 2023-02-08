@@ -25,10 +25,7 @@ jobs:
       - name: Print JSON
         if: github.event.client_payload.branch == 'dev'
         run: echo $POST_BODY
-      - name: Set up Python
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.11.1
+
       - uses: actions/checkout@v3
         if: github.event.client_payload.branch != 'dev'
         with:
